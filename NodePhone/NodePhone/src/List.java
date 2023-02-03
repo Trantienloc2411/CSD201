@@ -64,7 +64,86 @@ public class List {
              }
          }
     }
-    
+     
+     public void deleteFirst() {
+            if (head != null) {
+                head = head.next;
+            }
+        }
+
+        public void deleteLast() {
+            int count = 0;
+            Node prevNode = null;
+            Node lastNode = head;
+            while (lastNode.next != null) {
+                count++;
+                prevNode = lastNode;
+                lastNode = lastNode.next;
+            }
+            if (prevNode == null) {
+                return;
+            } else {
+                prevNode.next = null;
+                tail = prevNode;
+            }
+        }
+
+        public void deleteNode(int PhoneID) {
+            Node prevNode = null;
+            Node currentNode = head;
+            if (currentNode.N_id == PhoneID) {
+                deleteFirst();
+            }
+            while (currentNode != null) {
+                prevNode = currentNode;
+                currentNode = currentNode.next;
+                if (currentNode.N_id == PhoneID) {
+                    currentNode = currentNode.next;
+                    prevNode.next = currentNode;
+                    break;
+                }
+            }
+        }
+
+        public boolean isExisting(int PhoneID) {
+            Node currentNode = head;
+            while (currentNode != null) {
+                if (currentNode.N_id == PhoneID) {
+                    return true;
+                }
+                currentNode = currentNode.next;
+            }
+            return false;
+        }
+
+        public int search(String name) {
+            int count = 0;
+            Node p = head;
+            while (p != null) {
+                if (p.N_name.equalsIgnoreCase(name)) {
+                    count++;
+                    break;
+                }
+                p = p.next;
+            }
+            return count;
+        }
+
+        public Node maxValue() {
+            Node node = null;
+            double valueMax = 0;
+            Node currentNode = head;
+            while (currentNode != null) {
+                if (currentNode.N_price * currentNode.N_amount > valueMax) {
+                    valueMax = currentNode.N_price * currentNode.N_amount;
+                    node = currentNode;
+
+                }
+                currentNode = currentNode.next;
+            }
+            return node;
+        }
+     
       void show_list() {
         Node p =head; 
         while (p!= null) {
@@ -73,5 +152,7 @@ public class List {
         }
         System.out.println();
     }
+      
+      
      
 }
