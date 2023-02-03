@@ -173,22 +173,31 @@ public class PointerList implements I_Pointer {
     //search node by value 
     @Override
     public void search_Node(int x) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Node head = null, tail = null;
+        Node p = head;
+        int pos = 1;
+        if(list.isEmpty()){
+            System.out.println("List is Empty!");
+        }
+        else{
+            Node q = new Node();
+            
+        }
     }
 
     @Override
     public void show_List(int x) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       
     }
 
     @Override
     public void update_Note(int x, int index) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       
     }
 
     @Override
     public void insert_Behind(int x, int y) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       
     }
     
 }
