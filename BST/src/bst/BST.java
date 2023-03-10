@@ -5,6 +5,9 @@
  */
 package bst;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author f1nn
@@ -13,14 +16,73 @@ public class BST {
 
     class Node {
 
+        Object h;
         int info;
         Node left, right;
+        Node next;
+
+        public Node(int x, Node p) {
+            info = x;
+            next = p;
+        }
 
         Node(int x) {
             this.info = x;
             left = right = null;
         }
+
+        public Node(Object t, Node p) {
+            h = t;
+            next = p;
+        }
+
+        public Node(Object t) {
+            this(t, null);
+        }
     }
+
+    class MyQueue {
+
+        protected Node head, tail, next;
+
+        public MyQueue() {
+            head = tail = null;
+        }
+
+        public boolean isEmpty() {
+            return head == null;
+        }
+
+        Object front() throws Exception {
+            if (isEmpty()) {
+                throw new Exception();
+            }
+            return head.info;
+        }
+
+        public Object dequeue() throws Exception {
+            if (isEmpty()) {
+                throw new Exception();
+            }
+            int x = head.info;
+            head = head.next;
+            if (head == null) {
+                tail = null;
+            }
+            return x;
+        }
+
+        void enqueue(Object x) {
+            if (isEmpty()) {
+                head = tail = new Node(x);
+            } else {
+                tail.next = new Node(x);
+                tail = tail.next;
+            }
+        }
+
+    }
+
     /* 
     class Node
     {   int info;
@@ -36,8 +98,7 @@ public class BST {
          }  
     }
     
-     */
-
+    */
     Node root;
 
     BST() {
@@ -73,25 +134,140 @@ public class BST {
 
         }
     }
-    void visit(Node p){
+
+    void visit(Node p) {
         System.out.print(p.info + " | ");
     }
-    int height(Node p){
-        if(root == null){
+
+    int height(Node p) {
+        if (root == null) {
             return 0;
-        }
-        else{
+        } else {
             int h_left = 0, h_right = 0;
-            if(p.left != null){
+            if (p.left != null) {
                 h_left = height(p.left);
-            }
-            else if(p.right != null){
+            } else if (p.right != null) {
                 h_right = height(p.right);
             }
             int max = (h_left > h_right) ? h_left : h_right;
             return (max + 1);
         }
-        
     }
 
+    void breadth() {
+        if (root == null) {
+            return;
+        }
+        MyQueue q = new MyQueue(); 
+        q.enqueue(root);
+        Node p = null;
+        while (!q.isEmpty()) {
+            try {
+                p = (Node) q.dequeue();
+            } catch (Exception ex) {
+                Logger.getLogger(BST.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (p.left != null) {
+                q.enqueue(p.left);
+            }
+            if (p.right != null) {
+                q.enqueue(p.right);
+            }
+            visit(p);
+        }
+    }
+
+    void preOrder(Node p) {
+        if (p == null) {
+            return;
+        }
+        visit(p);
+        preOrder(p.left);
+        preOrder(p.right);
+    }
+
+    void inOrder(Node p) {
+        if (p == null) {
+            return;
+        }
+        preOrder(p.left);
+        visit(p);
+        preOrder(p.right);
+    }
+
+    void postOrder(Node p) {
+        if (p == null) {
+            return;
+        }
+        preOrder(p.left);
+        preOrder(p.right);
+        visit(p);
+    }
+// search by value
+
+    Node search(int x) {
+        Node p = root;
+        if (root == null) {
+            return null;
+        } else {
+            while (p != null) {
+                if (p.info == x) {
+                    return p;
+                } else {
+                    if (x < p.info) {
+                        p = p.left;
+                    } else if (x > p.info) {
+                        p = p.right;
+                    }
+                }
+            }
+            return null;
+        }
+    }
+
+    //Left
+    void deleteByMerging(int x) {
+        if (root == null) {
+            System.out.println("Nothing to delete!");
+        } else {
+            Node r = search(x);
+            Node p = search(x);
+            if (r.right != null) {
+                p = p.left;
+                while (p.right != null) {
+                    p = p.right;
+                }
+                p.right = r.right;
+                r = r.left;
+            }
+            System.out.println("Remove successfull");
+        }
+    }
+    
+    void deletebyCopying(int x){
+        if (root == null){
+            System.out.println("Nothing to delete!");
+        }
+        else{
+            Node p = search(x);
+            Node r = search(x);
+            if(r.left == null){
+                r = r.right;
+            }
+            else if(r.right == null){
+                r = r.left;
+            }
+            else{
+                p = p.left;
+                while(p.right != null)
+                {
+                    p = p.right;
+                }
+                r = p;
+                p = null;
+            }
+            System.out.println("Remove successfull!");
+        }
+    }
+    
 }
