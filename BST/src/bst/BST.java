@@ -5,6 +5,8 @@
  */
 package bst;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -155,25 +157,19 @@ public class BST {
     }
 
     void breadth() {
-        if (root == null) {
-            return;
+        Queue<Node> q = new LinkedList<>();
+        if (root != null) {
+            q.add(root);
         }
-        MyQueue q = new MyQueue(); 
-        q.enqueue(root);
-        Node p = null;
         while (!q.isEmpty()) {
-            try {
-                p = (Node) q.dequeue();
-            } catch (Exception ex) {
-                Logger.getLogger(BST.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Node p = q.remove();
+            visit(p);
             if (p.left != null) {
-                q.enqueue(p.left);
+                q.add(p.left);
             }
             if (p.right != null) {
-                q.enqueue(p.right);
+                q.add(p.right);
             }
-            visit(p);
         }
     }
 
@@ -212,6 +208,7 @@ public class BST {
         } else {
             while (p != null) {
                 if (p.info == x) {
+                    System.out.println("Found!");
                     return p;
                 } else {
                     if (x < p.info) {
